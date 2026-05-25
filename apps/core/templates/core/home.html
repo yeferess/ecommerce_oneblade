@@ -1,7 +1,87 @@
 {% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home | Oneblade{% endblock %}
+
 
 {% block content %}
 
-    <h1>Titulo de pagina home</h1>
+ <section class="">
+    <div class="container mx-auto text-center">
+        <h1 class="mb-4 text-4xl font-bold">Bienvenido a <span class="text-black">Oneblade,Te Guiamos en tus primeros pasos como barbero </span></h1>
+        <p class="mb-6 text-lg">Tu tienda de confianza en productos para barberos.</p>
+        <a href="" class="px-6 py-3 font-semibold text-black bg-[#8909f2] rounded hover:bg-[#6d07c2]">
+        Ver Todos los Productos
+        </a>
+    </div>
+</section>
+
+<section class="py-12 bg-gray-100">
+  <div class="container mx-auto text-center">
+    <h2 class="mb-8 text-3xl font-bold text-gray-800">Categorías destacadas</h2>
+
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3">
+       
+    <a href="">
+        <div class="object-cover p-6 bg-white rounded-lg shadow hover:shadow-lg">
+            <div class="w-full h-48 overflow-hidden rounded-lg">
+                    <img src="{% static 'img/clipper.png' %}" 
+                         alt="Iluminación" 
+                         class="object-cover w-full h-full">
+            </div>
+            <h3 class="text-xl font-semibold text-gray-800">Clipper</h3>
+            <p class="mt-2 text-gray-600">Las mejores maquinas calidad/Precio</p>
+        </div>
+      </a>
+
+    <a href="">    
+      <div class="object-cover p-6 bg-white rounded-lg shadow hover:shadow-lg">
+        <div class="w-full h-48 overflow-hidden rounded-lg">
+                    <img src="{% static 'img/trimmer.png' %}" 
+                         alt="Iluminación" 
+                         class="object-cover w-full h-full">
+                </div>
+        <h3 class="text-xl font-semibold text-gray-800">Trimmer</h3>
+        <p class="mt-2 text-gray-600">las patilleras mas destacadas del mercado!</p>
+      </div>
+    </a>
+    
+    <a href="">
+      <div class="p-6 bg-white rounded-lg shadow hover:shadow-lg">
+        <div class="w-full h-48 overflow-hidden rounded-lg">
+                    <img src="{% static 'img/repuesto.png' %}" 
+                         alt="Iluminación" 
+                         class="object-cover w-full h-full">
+        </div>
+        <h3 class="text-xl font-semibold text-gray-800">Repuestos</h3>
+        <p class="mt-2 text-gray-600">encuentra repuestos y accesorios aqui!</p>
+      </div>
+      
+    </div>   
+    
+  </div>
+</section>
+
+#seccion de informacion
+<section class="py-16 bg-white">
+  <div class="container mx-auto text-center">
+    <h2 class="mb-6 text-3xl font-bold text-gray-800">¿Por qué elegirnos?</h2>
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+      <div class="p-6">
+        <h3 class="mb-2 text-xl font-semibold text-blue-700">🔌 Calidad garantizada</h3>
+        <p class="text-gray-600">Solo trabajamos con marcas certificadas y productos duraderos.</p>
+      </div>
+      <div class="p-6">
+        <h3 class="mb-2 text-xl font-semibold text-blue-700">⚡ Entrega rápida</h3>
+        <p class="text-gray-600">Recibe tus productos en menos de 48 horas en todo el país.</p>
+      </div>
+      <div class="p-6">
+        <h3 class="mb-2 text-xl font-semibold text-blue-700">💬 Soporte personalizado</h3>
+        <p class="text-gray-600">Te asesoramos en tus compras y proyectos eléctricos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 {% endblock content %}

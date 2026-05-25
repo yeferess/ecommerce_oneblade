@@ -21,14 +21,14 @@
     </script>   
     <title>{% block title %}Ecommerce Oneblade{% endblock %}</title>    
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
 </head>
 
 <body class="flex flex-col min-h-screen text-gray-800">
     <header class="flex items-center justify-around mt-4" >
         <div class="md:flex md:items-center md:gap-12">
             <a class="block" href="#">
-                <img src="{% static 'logo.jpg' %}" alt="Logo" class="h-16 w-auto">
+                <img src="{% static 'img/logo.jpg' %}" alt="Logo" class="h-16 w-auto">
             </a>
         </div>
 
