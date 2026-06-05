@@ -6,7 +6,8 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdn.tailwindcss.com"></script>
+    {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <script>
     tailwind.config = {
         theme: {
@@ -27,7 +28,7 @@
 <body class="flex flex-col min-h-screen text-gray-800">
     <header class="flex items-center justify-around mt-4" >
         <div class="md:flex md:items-center md:gap-12">
-            <a class="block" href="#">
+            <a class="block" href="{% url "core:home" %}">
                 <img src="{% static 'img/logo.jpg' %}" alt="Logo" class="h-16 w-auto">
             </a>
         </div>
@@ -80,8 +81,8 @@
                     </li>
 
                 {% else %}
-                    <li><a href="" class="hover:text-gray-200">Ingresar</a></li>
-                    <li><a href="" class="hover:text-gray-200">Registrarse</a></li>
+                    <li><a href="{% url 'users:login' %}" class="hover:text-gray-200">Ingresar</a></li>
+                    <li><a href="{% url "users:register" %}" class="hover:text-gray-200">Registrarse</a></li>
                 {% endif %}  
             </ul>
         </div>

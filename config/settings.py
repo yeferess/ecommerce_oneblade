@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "apps.core",
+    "apps.users",
+    "apps.products",
 ]
 
 MIDDLEWARE = [
@@ -121,3 +123,7 @@ STATIC_URL = "static/"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+# se agrega para el modulo de usuarios
+AUTH_USER_MODEL = "users.User"
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
