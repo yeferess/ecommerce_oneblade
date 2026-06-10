@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.users",
     "apps.products",
+    "django.contrib.humanize",
 ]
 
 MIDDLEWARE = [
@@ -127,3 +128,8 @@ STATICFILES_DIRS = [
 # se agrega para el modulo de usuarios
 AUTH_USER_MODEL = "users.User"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# carpeta donde se guardan los archivos
+MEDIA_ROOT = BASE_DIR / "media"
+# URL para acceder desde el navegador
+MEDIA_URL = "/media/"

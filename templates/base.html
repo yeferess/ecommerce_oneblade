@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -37,8 +38,8 @@
             <nav class="space-x-20 text-xl">  
                 <ul class="flex items-center gap-6">              
                     <li><a href="{% url 'core:home' %}" class="font-bold hover:underline">Inicio</a></li>
-                    <li><a href="" class="font-bold hover:underline">Clipper</a></li>
-                    <li><a href=""class="font-bold hover:underline">Trimmer</a></li>
+                    <li><a href="{% url "products:product_by_category" 'clipper' %}" class="font-bold hover:underline">Clipper</a></li>
+                    <li><a href="{% url "products:product_by_category" 'trimmer' %}"class="font-bold hover:underline">Trimmer</a></li>
                     <li><a href="" class="font-bold hover:underline">Repuestos</a></li>
                     <form id="searchForm" action="" method="GET" class="flex items-center w-full">
                             <div class="flex">
@@ -68,13 +69,13 @@
                 {% if user.is_authenticated %}                    
                     <!-- <li><span class="text-sm"><i class="fa-solid fa-user"></i> {{ user.username }}</span></li> -->
                     
-                    <li><a href="{% url 'accounts:profile' %}" class="hover:text-gray-200">
+                    <li><a href="" class="hover:text-gray-200">
                         <i class="fa-solid fa-user"> {{ user.username }}</i>
                     </a></li>
 
-                    <li><a href="{% url 'orders:profile_orders' %}" class="hover:text-gray-200">Mis Pedidos</a></li>
+                    <li><a href="" class="hover:text-gray-200">Mis Pedidos</a></li>
                     <li>
-                        <form method="post" action="{% url 'accounts:logout' %}">
+                        <form method="post" action="">
                             {% csrf_token %}
                             <button type="submit" class="px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">Salir</button>
                         </form>
