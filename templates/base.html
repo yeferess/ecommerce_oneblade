@@ -40,7 +40,7 @@
                     <li><a href="{% url 'core:home' %}" class="font-bold hover:underline">Inicio</a></li>
                     <li><a href="{% url "products:product_by_category" 'clipper' %}" class="font-bold hover:underline">Clipper</a></li>
                     <li><a href="{% url "products:product_by_category" 'trimmer' %}"class="font-bold hover:underline">Trimmer</a></li>
-                    <li><a href="" class="font-bold hover:underline">Repuestos</a></li>
+                    <li><a href="{% url "products:product_by_category" 'repuestos' %}" class="font-bold hover:underline">Repuestos</a></li>
                     <form id="searchForm" action="" method="GET" class="flex items-center w-full">
                             <div class="flex">
                                 <input
@@ -64,8 +64,19 @@
         <div >
             <ul class="flex gap-4">
                 <li>
-                    <a href="" class="relative hover:underline"><i  class="relative fa-solid fa-cart-shopping"></i>            
+                    <a href="{% url 'orders:cart_detail' %}" class="relative">
+                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                        {% if cart_quantity > 0 %}
+                            <span
+                                class="absolute -top-2 -right-2
+                                    flex h-5 w-5 items-center justify-center
+                                    rounded-full bg-red-600 text-xs font-bold text-white">
+                                {{ cart_quantity }}
+                            </span>
+                        {% endif %}
+                    </a>
                 </li>
+
                 {% if user.is_authenticated %}                    
                     <!-- <li><span class="text-sm"><i class="fa-solid fa-user"></i> {{ user.username }}</span></li> -->
                     
@@ -252,4 +263,21 @@
         </div>
     </div>
     </footer>
+
+    {% comment %} desaparezcan los mensajes {% endcomment %}
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const messages = document.querySelectorAll(".flash-message");
+
+            messages.forEach((message) => {
+                setTimeout(() => {
+                    message.classList.add("opacity-0");
+
+                    setTimeout(() => {
+                        message.remove();
+                    }, 500); // Espera a que termine la animación
+                }, 3000); // El mensaje permanece 3 segundos
+            });
+        });
+    </script>
 </body>

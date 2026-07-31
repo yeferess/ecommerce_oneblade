@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.core",
     "apps.users",
     "apps.products",
+    "apps.orders",
     "django.contrib.humanize",
 ]
 
@@ -66,6 +67,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.orders.context_processors.cart",
             ],
         },
     },
@@ -133,3 +135,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_ROOT = BASE_DIR / "media"
 # URL para acceder desde el navegador
 MEDIA_URL = "/media/"
+
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "/"

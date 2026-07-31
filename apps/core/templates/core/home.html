@@ -22,11 +22,11 @@
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3">
        
-    <a href="">
+    <a href="{% url "products:product_by_category" 'clipper' %}">
         <div class="object-cover p-6 bg-white rounded-lg shadow hover:shadow-lg">
             <div class="w-full h-96 overflow-hidden rounded-lg">
                     <img src="{% static 'img/clipper.png' %}" 
-                         alt="Iluminación" 
+                         alt="clipper" 
                          class="object-contain w-full h-full">
             </div>
             <h3 class="text-xl font-semibold text-gray-800">Clipper</h3>
@@ -34,11 +34,11 @@
         </div>
       </a>
 
-    <a href="">    
+    <a href="{% url "products:product_by_category" 'trimmer' %}">    
       <div class="object-cover p-6 bg-white rounded-lg shadow hover:shadow-lg">
         <div class="w-full h-96 overflow-hidden rounded-lg">
                     <img src="{% static 'img/trimmer.png' %}" 
-                         alt="Iluminación" 
+                         alt="trimmer" 
                          class="object-contain w-full h-full">
                 </div>
         <h3 class="text-xl font-semibold text-gray-800">Trimmer</h3>
@@ -46,11 +46,11 @@
       </div>
     </a>
     
-    <a href="">
+    <a href="{% url "products:product_by_category" 'repuestos' %}">
       <div class="p-6 bg-white rounded-lg shadow hover:shadow-lg">
         <div class="w-full h-96 overflow-hidden rounded-lg">
                     <img src="{% static 'img/repuesto.png' %}" 
-                         alt="Iluminación" 
+                         alt="repuesto" 
                          class="object-contain w-full h-full">
         </div>
         <h3 class="text-xl font-semibold text-gray-800">Repuestos</h3>

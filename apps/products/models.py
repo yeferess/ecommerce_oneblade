@@ -28,7 +28,9 @@ class Product(models.Model):
         return self.name
 
     def is_available(self, quantity):
-        # verifica si hay stock para ese pedido
+        """
+        Retorna True si hay suficiente stock.
+        """
         return self.stock >= quantity
 
     def save(self, *args, **kwargs):
