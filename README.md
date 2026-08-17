@@ -10,47 +10,72 @@ El sistema fue desarrollado utilizando Django debido a su rapidez para construir
 
 ## Tecnologías Utilizadas
 
-- Python 3
-- Django
+- Python 3.12
+- Django 6.0.5
+- SQLite
 - HTML5
-- TailwindCSS
-- Postgresqsl
-- UV (gestor moderno de entornos y dependencias)
+- Tailwind CSS
+- UV
+- Git / GitHub
 
 ---
 Estructura del proyecto
 
 
+│ecommerce_oneblade/
 │
-├── .venv/
 ├── manage.py
 ├── pyproject.toml
 ├── uv.lock
 ├── .env
 ├── .gitignore
 │
-├── config/  # configuración global Django
+├── config/
 │   ├── __init__.py
-│   ├── settings/
-│   │   ├── __init__.py
-│   │   ├── base.py
-│   │   ├── local.py
-│   │   └── production.py
-│   │
+│   ├── settings.py
 │   ├── urls.py
 │   ├── asgi.py
 │   └── wsgi.py
 │
-├── apps/     
+├── apps/
+│   ├── __init__.py
+│   │
+│   ├── core/
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   └── ...
+│   │
 │   ├── users/
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── form.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   └── ...
+│   │
 │   ├── products/
-│   ├── orders/
-│   └── payments/
-│
-├── templates/
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── models.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │   └── ...
+│   │
+│   └── orders/
+│       ├── admin.py
+│       ├── apps.py
+│       ├── mixins.py
+│       ├── models.py
+│       ├── tests.py
+│       ├── urls.py
+│       ├── views.py
+│       └── ...
 │
 ├── static/
-│
 ├── media/
-│
-└── requirements/
+└── templates/

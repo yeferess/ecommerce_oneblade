@@ -18,7 +18,8 @@ def register(request):
     else:
         # redirige al formulario de registro
         form = RegisterForm()
-        return render(request, "users/register.html", {"form": form})
+
+    return render(request, "users/register.html", {"form": form})
 
 
 def user_loguin(request):
