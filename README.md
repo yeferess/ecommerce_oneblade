@@ -29,6 +29,7 @@ Estructura del proyecto
 ├── uv.lock
 ├── .env
 ├── .gitignore
+├── requirements.txt
 │
 ├── config/
 │   ├── __init__.py
