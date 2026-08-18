@@ -126,6 +126,7 @@ class Order(models.Model):
     order_number = models.CharField(
         max_length=25,
         unique=True,
+        null=True,
         blank=True,
     )
 
