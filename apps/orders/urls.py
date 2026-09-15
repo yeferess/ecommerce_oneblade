@@ -6,6 +6,9 @@ from .views import (
     ConfirmOrderView,
     RemoveItemView,
     UpdateItemView,
+    CheckoutView,
+    PaymentPageView,
+    ListOrdersView,
 )
 
 app_name = "orders"
@@ -32,8 +35,23 @@ urlpatterns = [
         name="remove_item",
     ),
     path(
+        "checkout/",
+        CheckoutView.as_view(),
+        name="checkout",
+    ),
+    path(
         "confirm/",
         ConfirmOrderView.as_view(),
         name="confirm",
+    ),
+    path(
+        "pagepay/<int:pk>",
+        PaymentPageView.as_view(),
+        name="pagepay",
+    ),
+    path(
+        "myorders",
+        ListOrdersView.as_view(),
+        name="myorders",
     ),
 ]

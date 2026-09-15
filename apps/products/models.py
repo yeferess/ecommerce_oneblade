@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 
 
 class Category(models.Model):
@@ -50,3 +51,12 @@ class ProductImage(models.Model):
 
     def __str__(self):
         return f"Imagen de  {self.product.name}"
+
+
+def search_products(query):
+    if not query:
+        return Product.objects.all()
+
+    return Product.objects.filter(
+        Q(name__icontains=query) | Q(description__icontains=query)
+    )

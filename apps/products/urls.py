@@ -11,4 +11,5 @@ urlpatterns = [
         views.product_by_category,
         name="product_by_category",
     ),
+    path("buscar/ajax/", views.product_search_ajax, name="search_ajax"),
 ]

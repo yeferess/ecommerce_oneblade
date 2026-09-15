@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User
 from django import forms
 
-INPUT_CLASS = "w-full border-2 border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all duration-200"
+INPUT_CLASS = "w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm text-gray-700 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-light transition-all duration-200"
 
 
 class RegisterForm(UserCreationForm):
