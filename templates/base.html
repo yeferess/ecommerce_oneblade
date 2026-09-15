@@ -7,132 +7,173 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    {% comment %} <script src="https://cdn.tailwindcss.com"></script> {% endcomment %}
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script>
-    tailwind.config = {
-        theme: {
-        extend: {
-            colors: {
-            primary: '#8909f2',
-            secondary: '#f59e0b',
-            },
-        },
-        },
+    <style type="text/tailwindcss">
+    @theme {
+        --color-primary: #8909f2;
+        --color-primary-dark: #6d07c2;
+        --color-primary-light: #f3e8ff;
+        --color-secondary: #f59e0b;
     }
-    </script>   
-    <title>{% block title %}Ecommerce Oneblade{% endblock %}</title>    
-
-    {% comment %} <link rel="stylesheet" href="{% static 'css/style.css' %}"> {% endcomment %}
+    </style>
+    <title>{% block title %}Ecommerce Oneblade{% endblock %}</title>
 </head>
 
-<body class="flex flex-col min-h-screen text-gray-800">
-    <header class="flex items-center justify-around mt-4" >
-        <div class="md:flex md:items-center md:gap-12">
-            <a class="block" href="{% url "core:home" %}">
-                <img src="{% static 'img/logo.jpg' %}" alt="Logo" class="h-16 w-auto">
-            </a>
-        </div>
+<body class="flex flex-col min-h-screen bg-gray-50 text-gray-800">
+    <header class="sticky top-0 z-40 bg-primary border-b border-gray-100 shadow-sm">
+        <div class="container mx-auto px-4">
+            <div class="flex h-16 items-center justify-between gap-4">
+                <a class="flex-shrink-0" href="{% url "core:home" %}">
+                    <img src="{% static 'img/logo.jpg' %}" alt="Logo" class="h-10 w-auto">
+                </a>
 
-        <div class="mt-2">
-            <nav class="space-x-20 text-xl">  
-                <ul class="flex items-center gap-6">              
-                    <li><a href="{% url 'core:home' %}" class="font-bold hover:underline">Inicio</a></li>
-                    <li><a href="{% url "products:product_by_category" 'clipper' %}" class="font-bold hover:underline">Clipper</a></li>
-                    <li><a href="{% url "products:product_by_category" 'trimmer' %}"class="font-bold hover:underline">Trimmer</a></li>
-                    <li><a href="{% url "products:product_by_category" 'repuestos' %}" class="font-bold hover:underline">Repuestos</a></li>
-                    <form id="searchForm" action="" method="GET" class="flex items-center w-full">
-                            <div class="flex">
-                                <input
-                                    name="q"
-                                    id="searchInput"
-                                    class="w-full rounded-full border-gray-200 bg-gray-100 p-4 pe-32 text-sm font-medium"   
-                                    type="text"
-                                    placeholder="Wmark 9004"
-                                    value="{{ query|default:'' }}"
-                                    autocomplete="off"/>
-                                <button type="submit" class="px-4 py-2 rounded-r hover:bg-red-600">
-                                    <i class="fa-solid fa-magnifying-glass"></i>
-                                </button>
-                                <div id="searchDropdown" class="hidden absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-xl max-h-96 overflow-y-auto z-50"></div>
-                            </div>
-                    </form>
-                </ul>
-            </nav>
-        </div>
-       
-        <div >
-            <ul class="flex gap-4">
-                <li>
-                    <a href="{% url 'orders:cart_detail' %}" class="relative">
-                        <i class="fa-solid fa-cart-shopping text-xl"></i>
+                <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-200">
+                    <a href="{% url 'core:home' %}" class="hover:text-primary transition-colors">Inicio</a>
+                    <a href="{% url "products:product_by_category" 'clipper' %}" class="hover:text-primary transition-colors">Clipper</a>
+                    <a href="{% url "products:product_by_category" 'trimmer' %}" class="hover:text-primary transition-colors">Trimmer</a>
+                    <a href="{% url "products:product_by_category" 'repuestos' %}" class="hover:text-primary transition-colors">Repuestos</a>
+                </nav>
+
+                <form class="js-search-form relative hidden md:flex flex-1 max-w-xs" action="{% url 'products:product_list' %}" method="GET" role="search" autocomplete="off" data-search-url="{% url 'products:search_ajax' %}">
+                    <input
+                        name="q"
+                        class="js-search-input w-full rounded-full border border-gray-200 bg-gray-50 py-2.5 pl-4 pr-10 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-light"
+                        type="text"
+                        placeholder="Buscar productos..."
+                        value="{{ query|default:'' }}"
+                        autocomplete="off"
+                        aria-label="Buscar productos"/>
+                    <button type="submit" aria-label="Buscar" class="absolute right-1 top-1/2 h-8 w-8 -translate-y-1/2 rounded-full text-gray-400 hover:text-primary transition-colors">
+                        <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                    </button>
+                    <div class="js-search-dropdown hidden absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl max-h-96 overflow-y-auto z-50"></div>
+                </form>
+
+                <div class="hidden md:flex items-center gap-5">
+                    <a href="{% url 'orders:cart_detail' %}" class="relative text-white hover:text-primary transition-colors">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
                         {% if cart_quantity > 0 %}
-                            <span
-                                class="absolute -top-2 -right-2
-                                    flex h-5 w-5 items-center justify-center
-                                    rounded-full bg-red-600 text-xs font-bold text-white">
+                            <span class="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-gray-400 text-[11px] font-bold text-white">
                                 {{ cart_quantity }}
                             </span>
                         {% endif %}
                     </a>
-                </li>
 
-                {% if user.is_authenticated %}                    
-                    <!-- <li><span class="text-sm"><i class="fa-solid fa-user"></i> {{ user.username }}</span></li> -->
-                    
-                    <li><a href="" class="hover:text-gray-200">
-                        <i class="fa-solid fa-user"> {{ user.username }}</i>
-                    </a></li>
-
-                    <li><a href="" class="hover:text-gray-200">Mis Pedidos</a></li>
-                    <li>
+                    {% if user.is_authenticated %}
+                        <span class="text-sm text-white">
+                            <i class="fa-solid fa-user mr-1"></i>{{ user.username }}
+                        </span>
+                        <a href="{% url "orders:myorders" %}" class="text-sm font-semibold text-white hover:text-primary transition-colors">Mis Pedidos</a>
                         <form method="post" action="">
                             {% csrf_token %}
-                            <button type="submit" class="px-3 py-1 text-sm text-white bg-red-500 rounded hover:bg-red-600">Salir</button>
+                            <button type="submit" class="rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-semibold text-white hover:bg-gray-50 transition-colors">Salir</button>
                         </form>
-                    </li>
+                    {% else %}
+                        <a href="{% url 'users:login' %}" class="text-sm font-semibold text-gray-700 hover:text-primary transition-colors">Ingresar</a>
+                        <a href="{% url "users:register" %}" class="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-dark transition-colors">Registrarse</a>
+                    {% endif %}
+                </div>
 
-                {% else %}
-                    <li><a href="{% url 'users:login' %}" class="hover:text-gray-200">Ingresar</a></li>
-                    <li><a href="{% url "users:register" %}" class="hover:text-gray-200">Registrarse</a></li>
-                {% endif %}  
-            </ul>
+                <div class="flex items-center gap-4 md:hidden">
+                    <a href="{% url 'orders:cart_detail' %}" class="relative text-gray-600">
+                        <i class="fa-solid fa-cart-shopping text-lg"></i>
+                        {% if cart_quantity > 0 %}
+                            <span class="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[11px] font-bold text-white">
+                                {{ cart_quantity }}
+                            </span>
+                        {% endif %}
+                    </a>
+                    <button id="mobileMenuButton" type="button" class="text-gray-700" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="mobileMenu" class="hidden md:hidden space-y-4 border-t border-gray-100 py-4">
+
+                <div class="relative">
+                    <form class="js-search-form relative" action="{% url 'products:product_list' %}" method="GET" role="search" autocomplete="off" data-search-url="{% url 'products:search_ajax' %}">
+                        <input
+                            name="q"
+                            class="js-search-input w-full rounded-full border border-gray-200 bg-gray-50 py-2.5 pl-4 pr-10 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-light"
+                            type="text"
+                            placeholder="Buscar productos..."
+                            value="{{ query|default:'' }}"
+                            autocomplete="off"
+                            aria-label="Buscar productos"/>
+                        <button type="submit" aria-label="Buscar" class="absolute right-1 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-gray-400 transition-colors hover:bg-primary hover:text-white">
+                            <i class="fa-solid fa-magnifying-glass text-sm"></i>
+                        </button>
+                        <div class="js-search-dropdown hidden absolute left-0 right-0 top-full mt-2 max-h-96 overflow-y-auto rounded-2xl border border-gray-100 bg-white shadow-lg z-50"></div>
+                    </form>
+                </div>
+
+                <div id="search-results" class="absolute left-0 right-0 top-full mt-2 hidden max-h-96 overflow-y-auto rounded-2xl border border-gray-100 bg-white shadow-lg z-50">
+                </div>
+
+                <nav class="flex flex-col gap-3 text-sm font-semibold text-gray-700">
+                    <a href="{% url 'core:home' %}">Inicio</a>
+                    <a href="{% url "products:product_by_category" 'clipper' %}">Clipper</a>
+                    <a href="{% url "products:product_by_category" 'trimmer' %}">Trimmer</a>
+                    <a href="{% url "products:product_by_category" 'repuestos' %}">Repuestos</a>
+                </nav>
+
+                <div class="flex flex-col gap-3 border-t border-gray-100 pt-4 text-sm font-semibold text-gray-700">
+                    {% if user.is_authenticated %}
+                        <span class="text-gray-500"><i class="fa-solid fa-user mr-1"></i>{{ user.username }}</span>
+                        <a href="{% url "orders:myorders" %}">Mis Pedidos</a>
+                        <form method="post" action="">
+                            {% csrf_token %}
+                            <button type="submit" class="text-left text-red-600">Salir</button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'users:login' %}">Ingresar</a>
+                        <a href="{% url "users:register" %}" class="text-primary">Registrarse</a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </header>
 
-    <div class="container mx-auto px-4 mt-40">
-        {% block content %}{% endblock content %}
+    <div class="container mx-auto px-4 py-8 min-h-screen">
+        {% block content %}
+        
+        {% endblock content %}
     </div>
 
-    <footer class="bg-white">
+    <footer class="bg-primary border-t border-gray-100">
     <div class="mx-auto max-w-7xl px-4 pt-16 pb-8 sm:px-6 lg:px-8">
-        <div class="mx-auto max-w-md">
-        <strong class="block text-center text-xl font-bold text-gray-900 sm:text-3xl">
-            Quieres que te enviemos un email con promociones?
-        </strong>
+        {% if user.is_authenticated %}
+            <li></li>
+        {% else %}
+            <div class="mx-auto max-w-md">
 
-        <form class="mt-6">
-            <div class="relative max-w-lg">
-            <label class="sr-only" for="email"> Email </label>
+                <strong class="block text-center text-xl font-bold text-gray-900 sm:text-3xl">
+                    Quieres que te enviemos un email con promociones?
+                </strong>
 
-            <input class="w-full rounded-full border-gray-200 bg-gray-100 p-4 pe-32 text-sm font-medium" id="email" type="email" placeholder="john@gmail.com">
+                <form class="mt-6">
+                    <div class="relative max-w-lg">
+                    <label class="sr-only" for="email"> Email </label>
 
-            <button class="absolute end-1 top-1/2 -translate-y-1/2 rounded-full bg-blue-600 px-5 py-3 text-sm font-medium text-white transition hover:bg-blue-700">
-                Subscribe
-            </button>
+                    <input class="w-full rounded-full border border-gray-200 bg-gray-50 p-4 pe-32 text-sm font-medium focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-light" id="email" type="email" placeholder="john@gmail.com">
+
+                    <button class="absolute end-1 top-1/2 -translate-y-1/2 rounded-full bg-primary px-5 py-3 text-sm font-medium text-white transition hover:bg-primary-dark">
+                        Subscribe
+                    </button>
+                    </div>
+                </form>
             </div>
-        </form>
-        </div>
+        {% endif %}
 
         <div class="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-32">
         <div class="mx-auto max-w-sm lg:max-w-none">
-            <p class="mt-4 text-center text-gray-500 lg:text-left lg:text-lg">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Praesentium natus quod
-            eveniet aut perferendis distinctio iusto repudiandae, provident velit earum?
+            <p class="mt-4 text-center text-gray-400 lg:text-left lg:text-lg">
+                Oneblade Colombia — tu tienda de confianza en máquinas de corte y repuestos. Productos originales, garantía real y atención personalizada.
             </p>
 
             <div class="mt-6 flex justify-center gap-4 lg:justify-start">
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
+            <a class="text-gray-100 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
                 <span class="sr-only"> Facebook </span>
 
                 <svg class="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -140,7 +181,7 @@
                 </svg>
             </a>
 
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
+            <a class="text-gray-100 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
                 <span class="sr-only"> Instagram </span>
 
                 <svg class="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -148,7 +189,7 @@
                 </svg>
             </a>
 
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
+            <a class="text-gray-100 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
                 <span class="sr-only"> Twitter </span>
 
                 <svg class="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -156,7 +197,7 @@
                 </svg>
             </a>
 
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
+            <a class="text-gray-100 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
                 <span class="sr-only"> GitHub </span>
 
                 <svg class="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -164,7 +205,7 @@
                 </svg>
             </a>
 
-            <a class="text-gray-700 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
+            <a class="text-gray-100 transition hover:text-gray-700/75" href="#" target="_blank" rel="noreferrer">
                 <span class="sr-only"> Dribbble </span>
 
                 <svg class="size-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -176,29 +217,29 @@
 
         <div class="grid grid-cols-1 gap-8 text-center lg:grid-cols-3 lg:text-left">
             <div>
-            <strong class="font-medium text-gray-900"> Services </strong>
+            <strong class="font-medium text-gray-400"> Services </strong>
 
             <ul class="mt-6 space-y-1">
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#">
-                    Marketing
+                <a class="text-white transition hover:text-gray-700/75" href="#">
+                    Consulting
                 </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#">
+                <a class="text-white transition hover:text-gray-700/75" href="#">
                     Graphic Design
                 </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#">
+                <a class="text-white transition hover:text-gray-700/75" href="#">
                     App Development
                 </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#">
+                <a class="text-white transition hover:text-gray-700/75" href="#">
                     Web Development
                 </a>
                 </li>
@@ -206,41 +247,41 @@
             </div>
 
             <div>
-            <strong class="font-medium text-gray-900"> About </strong>
+            <strong class="font-medium text-gray-400"> About </strong>
 
             <ul class="mt-6 space-y-1">
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> About </a>
+                <a class="text-white transition hover:text-gray-700/75" href="#"> About </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Careers </a>
+                <a class="text-white transition hover:text-gray-700/75" href="#"> Careers </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> History </a>
+                <a class="text-white transition hover:text-gray-700/75" href="#"> History </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Our Team </a>
+                <a class="text-white transition hover:text-gray-700/75" href="#"> Our Team </a>
                 </li>
             </ul>
             </div>
 
             <div>
-            <strong class="font-medium text-gray-900"> Support </strong>
+            <strong class="font-medium text-gray-400"> Support </strong>
 
             <ul class="mt-6 space-y-1">
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> FAQs </a>
+                <a class="text-white transition hover:text-gray-700/75" href="#"> FAQs </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#"> Contact </a>
+                <a class="text-white transition hover:text-gray-700/75" href="#"> Contact </a>
                 </li>
 
                 <li>
-                <a class="text-gray-700 transition hover:text-gray-700/75" href="#">
+                <a class="text-white transition hover:text-gray-700/75" href="#">
                     Live Chat
                 </a>
                 </li>
@@ -278,6 +319,20 @@
                     }, 500); // Espera a que termine la animación
                 }, 3000); // El mensaje permanece 3 segundos
             });
+
+            const menuButton = document.getElementById("mobileMenuButton");
+            const mobileMenu = document.getElementById("mobileMenu");
+
+            if (menuButton && mobileMenu) {
+                menuButton.addEventListener("click", () => {
+                    const isOpen = !mobileMenu.classList.contains("hidden");
+                    mobileMenu.classList.toggle("hidden");
+                    menuButton.setAttribute("aria-expanded", String(!isOpen));
+                    menuButton.querySelector("i").classList.toggle("fa-bars");
+                    menuButton.querySelector("i").classList.toggle("fa-xmark");
+                });
+            }
         });
     </script>
+    <script src="{% static 'js/dropdown.js'%}"></script>
 </body>

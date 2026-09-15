@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404, redirect
 from decimal import Decimal
 from django.views import View
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from apps.orders.mixins import CartMixin
 from apps.orders.models import Order
@@ -67,7 +67,7 @@ class AddProductView(
             pk=pk,
         )
 
-        print(request.POST.get("quantity"))
+        # print(request.POST.get("quantity"))
         quantity = int(
             request.POST.get(
                 "quantity",
@@ -195,33 +195,81 @@ class RemoveItemView(
         )
 
 
-class ConfirmOrderView(
+class CheckoutView(
     LoginRequiredMixin,
     CartMixin,
-    View,
+    DetailView,
 ):
-    def post(self, request):
+    model = Order
 
+    template_name = "orders/checkout.html"
+
+    context_object_name = "order"
+
+    def get_object(self):
+        return self.get_cart()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        order = self.object
+
+        subtotal = order.calculate_subtotal()
+
+        promotion = order.find_best_promotion(subtotal)
+
+        if promotion:
+            discount = promotion.calculate_discount(subtotal)
+        else:
+            discount = Decimal("0.00")
+
+        total = order.calculate_total(
+            subtotal,
+            discount,
+        )
+
+        context["subtotal"] = subtotal
+        context["promotion"] = promotion
+        context["discount"] = discount
+        context["shipping"] = order.shipping_amount
+        context["total"] = total
+
+        return context
+
+
+class ConfirmOrderView(LoginRequiredMixin, CartMixin, View):
+    def post(self, request):
         cart = self.get_cart()
 
         try:
             cart.confirm()
 
             messages.success(
-                request,
-                "Orden confirmada correctamente.",
+                request, f"Pedido {cart.order_number} creado correctamente."
             )
 
-            return redirect(
-                "orders:cart_detail",
-            )
+            return redirect("orders:pagepay", pk=cart.pk)
 
         except ValidationError as e:
-            messages.error(
-                request,
-                str(e),
-            )
+            messages.error(request, str(e))
+            return redirect("orders:checkout")
 
-            return redirect(
-                "orders:cart_detail",
-            )
+
+class PaymentPageView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = "orders/order_confirmed.html"
+    context_object_name = "order"
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user)
+
+
+class ListOrdersView(ListView, LoginRequiredMixin):
+    model = Order
+    template_name = "orders/my_orders.html"
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user).exclude(
+            status=Order.Status.CART
+        )

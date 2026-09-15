@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block content %}
+
+<div class="max-w-3xl mx-auto px-4 py-10">
+
+    <div class="rounded-xl border border-gray-200 bg-white shadow-sm p-8 text-center">
+
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-green-100 text-green-600">
+            <i class="fa-solid fa-check text-2xl"></i>
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-900 mb-4">
+            ¡Pedido creado correctamente!
+        </h1>
+
+        <p class="text-gray-600 mb-8">
+            Tu pedido ha sido registrado y está pendiente de pago.
+        </p>
+
+        <div class="bg-gray-50 rounded-lg p-6 text-left space-y-4">
+
+            <div class="flex justify-between">
+                <span class="font-medium text-gray-700">Número de pedido</span>
+                <span class="text-gray-900">{{ order.order_number }}</span>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <span class="font-medium text-gray-700">Estado</span>
+                <span class="text-xs font-semibold px-3 py-1 rounded-full
+                    {% if order.status == 'cancelled' %}bg-red-100 text-red-600
+                    {% elif order.status == 'paid' or order.status == 'delivered' %}bg-green-100 text-green-600
+                    {% elif order.status == 'pending_payment' %}bg-amber-100 text-amber-600
+                    {% else %}bg-blue-100 text-blue-600{% endif %}">
+                    {{ order.get_status_display }}
+                </span>
+            </div>
+
+            <div class="flex justify-between text-xl font-bold text-gray-900 border-t border-gray-200 pt-4">
+                <span>Total</span>
+                <span>${{ order.final_total|intcomma }}</span>
+            </div>
+        </div>
+
+        <!-- INFORMACIÓN DE PAGO -->
+        <div class="mt-8 text-left">
+
+            <h2 class="text-lg font-semibold text-gray-900 mb-4 text-center">
+                Realiza tu transferencia
+            </h2>
+
+            <!-- Cards de pago -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+
+                <!-- Nequi -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                    <div class="h-2 bg-[linear-gradient(90deg,#6C1FC6,#8B2FF8)]"></div>
+                    <div class="p-4 text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-xs bg-[linear-gradient(135deg,#6C1FC6,#8B2FF8)]">
+                                N
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Nequi</p>
+                                <p class="text-xs text-gray-400">Pago inmediato</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-1">Número de celular</p>
+                        <p class="font-mono font-bold text-gray-800 text-lg tracking-wider">325 255 2587</p>
+                        <p class="text-xs text-gray-500 mt-2">A nombre de: <span class="font-semibold text-gray-700">Yeferson Lasso</span></p>
+                    </div>
+                </div>
+
+                <!-- Bancolombia -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                    <div class="h-2 bg-[linear-gradient(90deg,#FDBA12,#F59E0B)]"></div>
+                    <div class="p-4 text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-xs bg-[linear-gradient(135deg,#FDBA12,#F59E0B)]">
+                                B
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Bancolombia</p>
+                                <p class="text-xs text-gray-400">Transferencia</p>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-500 mb-1">Tipo de cuenta</p>
+                        <p class="font-semibold text-gray-700 text-sm mb-2">Ahorros</p>
+                        <p class="text-xs text-gray-500 mb-1">Número de cuenta</p>
+                        <p class="font-mono font-bold text-gray-800 text-lg tracking-wider">900 100256 00</p>
+                        <p class="text-xs text-gray-500 mt-2">A nombre de: <span class="font-semibold text-gray-700">Oneblade Colombia</span></p>
+                    </div>
+                </div>
+
+                <!-- Bre-B -->
+                <div class="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden">
+                    <div class="h-2 bg-[linear-gradient(90deg,#0EA5E9,#38BDF8)]"></div>
+                    <div class="p-4 text-left">
+                        <div class="flex items-center gap-2 mb-3">
+                            <div class="w-9 h-9 rounded-full flex items-center justify-center text-white font-black text-xs bg-[linear-gradient(135deg,#0EA5E9,#38BDF8)]">
+                                B
+                            </div>
+                            <div>
+                                <p class="font-bold text-gray-800 text-sm">Bre-B</p>
+                                <p class="text-xs text-gray-400">Transferencia digital</p>
+                            </div>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-1">Número / Llave</p>
+
+                        <p class="font-mono font-bold text-gray-800 text-lg tracking-wider">@ONB325 255 2587</p>
+                        <p class="text-xs text-gray-500 mt-2">A nombre de: <span class="font-semibold text-gray-700">@onebladecolombia</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- botón de whatsapp -->
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-500 mb-3">¿Ya realizaste el pago? Envíanos tu comprobante y agilizamos el despacho 🚀</p>
+
+                <a href="https://wa.me/573174703105?text=Hola%21,%20Nacional%20de%20Eléctricos,%20te%20comparto%20comprobante%20de%20pago%20de%20la%20Orden%20%23%20{{order.id}}"
+                target="_blank"
+                class="inline-flex items-center gap-3 px-6 py-3.5 rounded-xl text-white font-semibold text-sm shadow-lg hover:brightness-110 active:scale-95 transition-all duration-200 no-underline bg-[#25D366]">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" class="w-5 h-5 fill-white flex-shrink-0">
+                        <path d="M16.004 2C8.28 2 2 8.278 2 16c0 2.478.65 4.907 1.886 7.044L2 30l7.144-1.867A13.946 13.946 0 0016.004 30C23.722 30 30 23.722 30 16S23.722 2 16.004 2zm0 25.5c-2.328 0-4.607-.626-6.597-1.812l-.473-.28-4.24 1.108 1.13-4.12-.308-.488A11.455 11.455 0 014.5 16c0-6.351 5.153-11.5 11.504-11.5C22.353 4.5 27.5 9.649 27.5 16c0 6.351-5.147 11.5-11.496 11.5zm6.307-8.617c-.346-.173-2.046-1.008-2.363-1.123-.317-.115-.548-.172-.779.173-.23.345-.893 1.122-1.094 1.352-.2.23-.403.258-.748.086-.346-.173-1.46-.537-2.782-1.713-1.028-.916-1.722-2.047-1.924-2.392-.202-.346-.022-.533.151-.705.155-.155.346-.403.519-.605.172-.2.229-.345.344-.575.115-.23.057-.432-.029-.605-.086-.173-.779-1.872-1.067-2.563-.28-.673-.566-.582-.779-.593-.2-.01-.43-.013-.66-.013-.23 0-.605.086-.921.432-.317.345-1.21 1.18-1.21 2.878 0 1.699 1.238 3.34 1.41 3.57.173.23 2.437 3.72 5.906 5.217.825.356 1.469.569 1.971.728.828.263 1.582.226 2.178.137.664-.099 2.046-.835 2.334-1.642.288-.806.288-1.497.202-1.642-.086-.144-.317-.23-.663-.403z"/>
+                    </svg>
+
+                    Enviar comprobante por WhatsApp
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -5,30 +5,19 @@
 
 {% block content %}
 
-<h1 class="text-3xl font-bold text-center mb-8">
+<h1 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8">
     Mi carrito
 </h1>
 
-{% comment %} {% if messages %}
-    {% for message in messages %}
-        <div class="mb-4 rounded-lg p-4
-            {% if message.tags == 'success' %}
-                bg-green-100 text-green-700
-            {% else %}
-                bg-red-100 text-red-700
-            {% endif %}">
-            {{ message }}
-        </div>
-    {% endfor %}
-{% endif %} {% endcomment %}
+
 {% if messages %}
     {% for message in messages %}
         <div
-            class="flash-message mb-4 rounded-lg p-4 transition-opacity duration-500
+            class="flash-message mb-4 rounded-lg border-l-4 p-4 text-sm transition-opacity duration-500
             {% if message.tags == 'success' %}
-                bg-green-100 text-green-700
+                border-green-500 bg-green-50 text-green-700
             {% else %}
-                bg-red-100 text-red-700
+                border-red-500 bg-red-50 text-red-700
             {% endif %}">
             {{ message }}
         </div>
@@ -42,16 +31,16 @@
     <!-- Productos -->
     <div class="lg:col-span-2">
 
-        <div class="card rounded-xl overflow-hidden">
+        <div class="rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm">
 
             <table class="min-w-full">
 
-                <thead class="bg-gray-100">
+                <thead class="bg-gray-50">
                     <tr>
-                        <th class="text-left p-4">Producto</th>
-                        <th class="text-center">Precio</th>
-                        <th class="text-center">Cantidad</th>
-                        <th class="text-center">Subtotal</th>
+                        <th class="text-left p-4 text-sm font-semibold text-gray-600">Producto</th>
+                        <th class="text-center text-sm font-semibold text-gray-600">Precio</th>
+                        <th class="text-center text-sm font-semibold text-gray-600">Cantidad</th>
+                        <th class="text-center text-sm font-semibold text-gray-600">Subtotal</th>
 
                         <th></th>
                     </tr>
@@ -61,25 +50,25 @@
 
                 {% for item in order.items.all %}
 
-                    <tr class="border-b">
+                    <tr class="border-b border-gray-100">
                         <td class="p-4">
-                            <div class="font-semibold">{{ item.product.name }}</div>
+                            <div class="font-semibold text-gray-900">{{ item.product.name }}</div>
                         </td>
-                        <td class="text-center">${{ item.price|intcomma }}</td>
+                        <td class="text-center text-gray-700">${{ item.product.price|intcomma }}</td>
                         <td class="text-center">
                             <form method="post" action="{% url 'orders:update_item' item.product.id %}"
                                 class="flex justify-center items-center gap-2">
                                 {% csrf_token %}
                                 <input type="number" name="quantity" min="1" value="{{ item.quantity }}"
-                                    class="w-20 border rounded px-2 py-1">
+                                    class="w-16 rounded-lg border border-gray-300 px-2 py-1.5 text-sm focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary-light">
 
-                                <button class="bg-blue-600 text-white px-3 py-1 rounded">
+                                <button class="rounded-lg border border-blue-600 bg-white px-3 py-1.5 text-sm font-semibold text-blue-600 hover:bg-gray-50 transition-colors">
                                     Actualizar
                                 </button>
                             </form>
                         </td>
 
-                        <td class="text-center">
+                        <td class="text-center font-semibold text-gray-900">
                             ${{ item.calculate_subtotal|intcomma }}
                         </td>
 
@@ -87,7 +76,7 @@
                             <form method="post" action="{% url 'orders:remove_item' item.product.id %}">
 
                                 {% csrf_token %}
-                                <button class="bg-red-600 text-white px-3 py-1 rounded">
+                                <button class="rounded-lg border border-red-200 px-3 py-1.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors">
                                     Eliminar
                                 </button>
 
@@ -105,41 +94,38 @@
 
     <div>
 
-        <div class="card rounded-xl p-6">
+        <div class="rounded-xl border border-gray-200 bg-white shadow-sm p-6">
 
-            <h2 class="text-xl font-bold mb-4">Resumen</h2>
+            <h2 class="text-lg font-semibold text-gray-900 mb-4">Resumen</h2>
 
-            <div class="flex justify-between mb-2">
+            <div class="flex justify-between mb-2 text-sm text-gray-600">
                 <span>Subtotal</span>
                 <span>${{ order.calculate_subtotal|intcomma }}</span>
             </div>
 
-            <div class="flex justify-between mb-2">
+            <div class="flex justify-between mb-2 text-sm text-gray-600">
                 <span>Descuento</span>
                 <span>-${{ order.discount_amount|intcomma }}</span>
             </div>
 
-            <div class="flex justify-between mb-2">
+            <div class="flex justify-between mb-2 text-sm text-gray-600">
                 <span>Envío</span>
                 <span>${{ order.shipping_amount|intcomma }}</span>
             </div>
 
-            <hr class="my-4">
+            <hr class="my-4 border-gray-100">
 
-            <div class="flex justify-between text-xl font-bold">
+            <div class="flex justify-between text-xl font-bold text-gray-900">
                 <span>Total</span>
                 <span>${{ total|intcomma }}</span>
             </div>
 
-            <form method="post" action="{% url 'orders:confirm' %}"class="mt-6">
-
-                {% csrf_token %}
-
-                <button class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">
-                    Confirmar pedido
-                </button>
-
-            </form>
+            <a
+                href="{% url 'orders:checkout' %}"
+                class="block w-full text-center bg-primary text-white py-3 mt-4 rounded-lg font-semibold text-sm hover:bg-primary-dark transition-colors"
+            >
+                Continuar al pago
+            </a>
 
         </div>
 
@@ -150,11 +136,11 @@
 {% else %}
 
 <div class="text-center py-16">
-    <h2 class="text-2xl font-semibold mb-4">
+    <h2 class="text-2xl font-semibold text-gray-900 mb-4">
         Tu carrito está vacío
     </h2>
 
-    <ahref="{% url 'products:product_list' %}"class="bg-indigo-600 text-white px-6 py-3 rounded-lg">
+    <a href="{% url 'products:product_list' %}" class="inline-block rounded-lg bg-primary text-white px-6 py-3 text-sm font-semibold hover:bg-primary-dark transition-colors">
         Ver productos
     </a>
 </div>

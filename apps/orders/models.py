@@ -411,23 +411,20 @@ class Order(models.Model):
             return
 
         today = timezone.localdate()
+        prefix = f"ORD-{today.strftime('%Y%m%d')}-"
 
         last_order = (
-            Order.objects.filter(
-                created_at__date=today,
-                order_number__isnull=False,
-            )
-            .exclude(order_number="")
-            .order_by("-created_at")
+            Order.objects.filter(order_number__startswith=prefix)
+            .order_by("-order_number")
             .first()
         )
-        sequence = 1
 
+        sequence = 1
         if last_order:
             last_sequence = int(last_order.order_number.split("-")[-1])
             sequence = last_sequence + 1
 
-        self.order_number = f"ORD-{today.strftime('%Y%m%d')}-{sequence:06d}"
+        self.order_number = f"{prefix}{sequence:06d}"
 
     def _mark_as_pending_payment(self):
         self.status = self.Status.PENDING_PAYMENT

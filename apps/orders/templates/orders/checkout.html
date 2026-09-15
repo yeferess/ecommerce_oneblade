@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+
+{% block content %}
+
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-8">Checkout</h1>
+
+    <div>
+        <!-- RESUMEN DEL PEDIDO -->
+        <div>
+
+            <div class="rounded-xl border border-gray-200 bg-white shadow-sm p-6">
+
+                <h2 class="text-lg font-semibold text-gray-900 mb-6">
+                    Resumen del pedido
+                </h2>
+
+
+                <!-- Producto -->
+
+                {% if order.items.exists %}
+
+                    {% for item in order.items.all  %}
+                        <div class="flex justify-between gap-4 py-3 border-b border-gray-100">
+
+                            <div>
+                                <p class="font-medium text-gray-900">
+                                    {{item.product.name}}
+                                </p>
+
+                                <p class="text-sm text-gray-500">
+                                    cantidad: {{item.quantity}}
+                                </p>
+                            </div>
+
+                            <span class="font-medium text-gray-900">
+                                ${{ item.price |intcomma }}
+                            </span>
+                        </div>
+                    {% endfor %}
+
+
+                {% else %}
+                    <div class="text-center py-16">
+                        <h2 class="text-2xl font-semibold text-gray-900 mb-4">
+                            Tu carrito está vacío
+                        </h2>
+
+                        <a href="{% url 'products:product_list' %}" class="inline-block rounded-lg bg-primary text-white px-6 py-3 text-sm font-semibold hover:bg-primary-dark transition-colors">
+                            Ver productos
+                        </a>
+                    </div>
+
+                {% endif %}
+
+
+                <!-- Totales -->
+                <div class="mt-5 space-y-3 text-sm">
+
+                    <div class="flex justify-between text-gray-600">
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <span>
+                            ${{subtotal|intcomma}}
+                        </span>
+                    </div>
+
+
+                    <div class="flex justify-between text-gray-600">
+                        <span>
+                            Envío
+                        </span>
+
+                        <span>
+                            ${{ shipping|intcomma }}
+                        </span>
+                    </div>
+
+
+                    <div class="border-t border-gray-100 pt-4 flex justify-between">
+
+                        <span class="text-lg font-semibold text-gray-900">
+                            Total
+                        </span>
+
+                        <span class="text-xl font-bold text-gray-900">
+                            ${{ total|intcomma }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <form method="post" action="{% url 'orders:confirm' %}" class="mt-6">
+
+                {% csrf_token %}
+                <button class="w-full bg-primary text-white py-3 rounded-lg font-semibold text-sm hover:bg-primary-dark transition-colors">
+                    Confirmar pedido
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
