@@ -109,6 +109,10 @@ STORAGES = {
     },
 }
 
+# Compatibilidad con librerías que todavía leen el nombre de configuración anterior
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
 AUTH_USER_MODEL = "users.User"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
