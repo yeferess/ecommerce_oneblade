@@ -81,7 +81,7 @@ def product_search_ajax(request):
                 "price": f"${product.price:,.0f}",
                 "image_url": main_image.image.url if main_image else "",
                 "description": product.description or "",
-                "url": reverse("products:detail", args=[product.pk]),
+                "url": reverse("products:product_detail", args=[product.pk]),
             }
         )
 

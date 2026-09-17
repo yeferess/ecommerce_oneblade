@@ -98,3 +98,21 @@ class UserTestCase(TestCase):
             "_auth_user_id",
             self.client.session,
         )
+
+    def test_user_logout(self):
+        """Verifica que cerrar sesión limpie la sesión y redirija al inicio."""
+
+        User = get_user_model()
+
+        User.objects.create_user(
+            username="yefer",
+            email="yefer@test.com",
+            password="12345678",
+        )
+
+        self.client.login(username="yefer", password="12345678")
+
+        response = self.client.get(reverse("users:logout"))
+
+        self.assertRedirects(response, reverse("core:home"))
+        self.assertNotIn("_auth_user_id", self.client.session)
