@@ -48,7 +48,7 @@
                         {% else %} bg-green-100 text-green-600
                         {% endif %}">
 
-                        {% if product.stock == '0' %} sin stock
+                        {% if product.stock == 0 %} sin stock
                         {% else %} {{product.stock}} Disponibles
                         {% endif %}
                     </span>
