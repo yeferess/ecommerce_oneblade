@@ -11,11 +11,10 @@ El sistema fue desarrollado utilizando Django debido a su rapidez para construir
 ## Tecnologías Utilizadas
 
 - Python 3.12
-- Django 6.0.5
-- SQLite
+- Django 5.2.17
+- PostgreSQL (SQLite en local)
 - HTML5
 - Tailwind CSS
-- UV
 - Git / GitHub
 
 ---
@@ -25,8 +24,6 @@ Estructura del proyecto
 │ecommerce_oneblade/
 │
 ├── manage.py
-├── pyproject.toml
-├── uv.lock
 ├── .env
 ├── .gitignore
 ├── requirements.txt
